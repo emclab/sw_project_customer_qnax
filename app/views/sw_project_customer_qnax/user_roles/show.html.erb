@@ -1,0 +1,34 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<div id="main_body">
+<h4><%=@title %></h4>
+
+<p>
+  <b><%= t('Project') %></b>
+  <%= @user_role.project_info.name %>
+</p>
+<p>
+  <b><%= t('Role') %></b>
+  <%= @user_role.role %>
+</p>
+<p>
+  <b><%= t('Department') %></b>
+  <%= @user_role.department %>
+</p>
+<p>
+  <b><%= t('Brief Note') %></b>
+  <%= @user_role.brief_note %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @user_role.last_updated_by.name if @user_role.last_udpated_by_id.present? %>
+</p>
+
+
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+  
+</div>
+
+<% end %>

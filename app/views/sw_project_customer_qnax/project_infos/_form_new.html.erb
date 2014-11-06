@@ -1,0 +1,29 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @project_info do |f| %>
+  <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
+  <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
+  <%= f.input :project_id, :as => :hidden, :input_html => {:value => @project.id} %>
+  <%= f.input :customer_id, :as => :hidden, :input_html => {:value => @project.customer_id} %>
+  <%= f.input :key_biz_form, :label => t('Key Biz Form') %>
+  <%= f.input :goal, :label => t('Goal'), :input_html => { :rows => 3} %>
+  <%= f.input :main_biz, :label => t('Main Biz'), :input_html => { :rows => 3} %>
+  <%= f.input :number_of_user, :label => t('Number of User') %>
+  <%= f.input :number_of_desktop, :label => t('Number of Desktop') %>
+  <%= f.input :number_of_laptop, :label => t('Number of laptop') %>
+  <%= f.input :number_of_tablet, :label => t('Number of tablet') %>
+  <%= f.input :use_smartphone, :label => t('Use Smartphone'), :as => :boolean %>
+  <%= f.input :has_broadband, :label => t('Broadband Connection'), :as => :boolean %>
+  <%= f.input :current_it_status, :label => t('IT Status'), :input_html => { :rows => 3} %>
+  <%= f.input :urgent_to_solve, :label => t('Urgent To Solve'), :input_html => { :rows => 2} %>
+  
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>
+<% end %>
+
+<% end %>
+
+

@@ -1,0 +1,89 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+<h4><%= @title %></h4>
+
+<p>
+    <b><%= t('Submit Date') %></b>
+    <%= @project_info.submit_date.strftime('%Y/%m/%/d') if @project_info.submit_date.present? %>
+</p>
+<p>
+  <b><%= t('Project Name') %></b>
+  <%= @project.name %>
+</p>
+<p>
+  <b><%= t('Customer') %></b>
+  <%= @customer.name %>
+</p>
+<p>
+  <b><%= t('Broadband') %></b>
+  <%= @project_info.broadband ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%= t('Use Smartphone') %></b>
+  <%= @project_info.use_smartphone ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%= t('Goal') %></b>
+  <%= @project_info.goal %>
+</p>
+<p>
+  <b<%=t('Urgent to Solve')%></b>
+  <%= @project_info.urgent_to_solve %>
+</p>
+<p>
+  <b><%= t('Main Biz') %></b>
+  <%= @project_info.main_biz %>
+</p>
+<p>
+  <b><%= t('# of User') %></b>
+  <%= @project_info.number_of_user %>
+</p>
+<p>
+  <b><%= t('# of Desktop') %></b>
+  <%= @project_info.number_of_desktop %>
+</p>
+<p>
+  <b><%= t('# of Laptop') %></b>
+  <%= @project_info.number_of_laptop %>
+</p>
+<p>
+  <b><%= t('# of Tablet') %></b>
+  <%= @project_info.number_of_tablet %>
+</p>
+<p>
+  <b><%= t('Key Biz form') %></b>
+  <%= @project_info.key_biz_form %>
+</p>
+<p>
+  <b><%= t('Submitted By') %></b>
+  <%= @project_info.submitted_by.name %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @project_info.last_updated_by.name %>
+</p>
+<p>
+  <b><%= t('LOG：') %></b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @project_info.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %></li>
+  <% end %>
+</p>
+
+<table class="table table-striped">
+  <tr>
+    <th>
+    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @project_info.id, :resource_name => params[:controller], :subaction => 'project_info',
+    	     :format => :js), :remote => true, :id => 'new_log_link' , :class => BUTTONS_CLS['action'] if has_action_right?('create_project_info', 'commonx/logs') %>
+    </th>
+  </tr>
+</table>
+
+
+</div>
+
+<% end %>

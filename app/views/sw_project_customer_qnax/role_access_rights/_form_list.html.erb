@@ -1,0 +1,46 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div class="pagination"><%= will_paginate models %></div>
+    <table class="table table-striped">
+		<tr>
+            <th>#</th>
+			<th><%= t('Role') %></th>
+			<th><%= t('Action') %></th>
+			<th><%= t('Resource') %></th>
+			<th><%= t('Processed') %></th>
+			<th><%= t('Brief Note') %></th>
+			<th><%= t('Last Updated By') %></th>
+			<th></th>
+		</tr>
+		<% models.each do |r| %>
+		  <tr>
+            <% if has_action_right?('show', 'sw_project_customer_qnax/user_roles', r) %>
+                <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{user_role_path(r)}"  %></td>
+            <% else %>
+                <td><%= r.id %></td>
+            <% end %>
+		  	<td><%= prt(r, 'user_role.name') %></td>
+			<td><%= prt(r, :action) %></td>
+			<td><%= prt(r, :resource) %></td>
+			<td><%= r.processed ? t('Yes') : t('No') %></td>
+			<td><%= prt(r, :brief_note) %></td>
+			<td><%= prt(r, 'last_updated_by.name') if r.last_updated_by_id.present? %></td>    
+		    <td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_role_access_right_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+		  </tr>
+		<% end %>
+	</table>
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <%= link_to t('New Access Right'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape new_role_access_right_path(:user_role_id => @user_role)}", :class => BUTTONS_CLS['action'] if @user_role && has_action_right?('create', params[:controller]) %>
+	  
+	    </th>
+	  </tr>
+	</table>
+	
+<% end %>

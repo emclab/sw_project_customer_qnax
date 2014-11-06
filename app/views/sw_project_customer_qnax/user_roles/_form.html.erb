@@ -1,0 +1,14 @@
+<% if @view_in_config && @erb_code %>
+    <%= render inline: @erb_code %>
+<% else %>
+  <%= simple_form_for @user_role do |f| %>
+    <%= f.input :project_info_name, :label => t('Project'), :input_html => {:value => @project_info.name}, :readonly => true %>
+    <%= f.input :name, :label => t('Role') %>
+    <%= f.input :for_department, :label => t('Department') %>
+    <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 1} %>
+    
+    <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+    <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>
+  <% end %>
+
+<% end %>
