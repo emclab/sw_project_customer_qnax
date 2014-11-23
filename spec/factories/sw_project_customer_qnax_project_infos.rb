@@ -6,18 +6,18 @@ FactoryGirl.define do
     project_id 1
     #last_updated_by_id 1
     submitted_by_id 1
-    name "MyString"
-    goal "MyText"
+    #name "MyString"
+    goal_to_achieve "MyText"
     main_biz "MyText"
     key_biz_form "MyText"
     number_of_user 1
-    urgent_to_solve "MyString"
-    current_it_status "MyText"
-    has_broadband false
-    number_of_desktop 1
-    number_of_laptop 1
-    number_of_tablet 1
-    use_smartphone false
-    has_data_center false
+    issue_to_solve "MyString"
+    about_broadband '3M broadband'
+    about_hardware 'hardware'
+    about_software 'software'
+    about_network 'network'
+    about_data_center 'false'
+    about_department 'dept1, 2'
+    about_office_location 'about location'
   end
 end

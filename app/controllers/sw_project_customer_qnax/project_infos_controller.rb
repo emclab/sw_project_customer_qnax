@@ -27,6 +27,7 @@ module SwProjectCustomerQnax
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
         @project = SwProjectCustomerQnax.project_class.find_by_id(params[:project_info][:project_id]) if params[:project_info][:project_id].present?
+        @customer = SwProjectCustomerQnax.customer_class.find_by_id(params[:project_info][:customer_id]) if params[:project_info][:customer_id].present?
         @erb_code = find_config_const('project_info_new_view', 'sw_project_customer_qnax')
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
@@ -63,6 +64,7 @@ module SwProjectCustomerQnax
       @customer = SwProjectCustomerQnax.customer_class.find_by_id(SwProjectCustomerQnax::ProjectInfo.find_by_id(params[:id].to_i).customer_id) if params[:id].present?
       @project = SwProjectCustomerQnax.project_class.find_by_id(params[:project_id]) if params[:project_id].present?
       @project = SwProjectCustomerQnax.project_class.find_by_id(SwProjectCustomerQnax::ProjectInfo.find_by_id(params[:id]).project_id) if params[:id].present?
+      @sw_projects = SwProjectCustomerQnax.project_class.where(customer_id: @customer.id) if @customer
     end
      
   end

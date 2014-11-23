@@ -6,16 +6,12 @@
 <h4><%=@title %></h4>
 
 <p>
-  <b><%= t('Project') %></b>
-  <%= @user_role.project_info.name %>
-</p>
-<p>
   <b><%= t('Role') %></b>
-  <%= @user_role.role %>
+  <%= @user_role.name %>
 </p>
 <p>
   <b><%= t('Department') %></b>
-  <%= @user_role.department %>
+  <%= @user_role.for_department %>
 </p>
 <p>
   <b><%= t('Brief Note') %></b>
@@ -23,7 +19,7 @@
 </p>
 <p>
   <b><%= t('Last Updated By') %></b>
-  <%= @user_role.last_updated_by.name if @user_role.last_udpated_by_id.present? %>
+  <%= @user_role.last_updated_by.name if @user_role.last_updated_by_id.present? %>
 </p>
 
 

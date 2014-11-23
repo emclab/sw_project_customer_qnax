@@ -6,6 +6,6 @@ FactoryGirl.define do
     user_role_id 1
     action "MyString"
     brief_note "MyText"
-    index 1
+    ranking_index 1
   end
 end

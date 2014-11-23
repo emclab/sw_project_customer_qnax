@@ -1,0 +1,49 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+<h4><%=@title %></h4>
+
+<p>
+  <b><%= t('Workflow Name') %></b>
+  <%= @workflow.name %>
+</p>
+<p>
+  <b><%= t('Biz Form') %></b>
+  <%= @workflow.biz_form.name if @workflow.biz_form_id.present? %>
+</p>
+<b><%=t('Workflow Steps')%></b>
+<p>
+  <% @workflow.workflow_steps.order("ranking_index").each do |t| %>
+    <li><%=t.ranking_index%>,&nbsp;<%=t.user_role.name %>,&nbsp;,<%=t.action%>,&nbsp;<%=t.brief_note %> </li>
+  <% end %>
+</p>
+<p>
+  <b><%= t('Brief Note') %></b>
+  <%= @workflow.brief_note %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @workflow.last_updated_by.name if @workflow.last_updated_by_id.present? %>
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @workflow.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+  <% end %>
+</p>
+
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+          <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	  	  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @workflow.id, :resource_name => params[:controller], :subaction => 'customer_workflow', :format => :js), :remote => true, 
+                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_customer_workflow', 'commonx/logs') %>
+       </th>
+	  </tr>
+	</table>    	
+</div>
+
+<% end %>

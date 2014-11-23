@@ -14,13 +14,13 @@
 		</tr>
 		<% models.each do |r| %>
 		  <tr>
-            <% if has_action_right?('show', 'sw_project_customer_qnax/user_roles', r) %>
+            <% if has_action_right?('show', params[:controller], r) %>
                 <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{user_role_path(r)}"  %></td>
             <% else %>
                 <td><%= r.id %></td>
             <% end %>
 		  	<td><%= r.name %></td>
-			<td><%= prt(r, :description) %></td>
+			<td><%= prt(r, :name) %></td>
 			<td><%= prt(r, :for_department) %></td>
 			<td><%= prt(r, :brief_note) %></td>
 			<td><%= prt(r, 'last_updated_by.name') if r.last_updated_by_id.present? %></td>    

@@ -3,7 +3,6 @@
   
 <% else %>
 <div class="pagination"><%= will_paginate models %></div>
-# of Engines=<%=models.count %>, Active=<%=models.where(active: true).count %>
 <table class="table table-striped">
   <tr>
     <th>#</th>
@@ -15,23 +14,27 @@
     <th><%= t('Last Updated By') %></th>
     <th></th>
     <th></th>
+    <th></th>
+    <th></th>
   </tr>
 
 <% models.each do |r| %>
   <tr>
+  	<% project = SwProjectCustomerQnax.project_class.find_by_id(r.project_id) %>
     <% if has_action_right?('show', params[:controller], r) %>
         <td><%= link_to r.id, SUBURI + "/authentify/view_handler?index=1&url=#{project_info_path(r)}"  %></td>
     <% else %>
         <td><%= r.id %></td>
     <% end %>
     <td><%= prt(r, :created_at).strftime('%Y/%m/%d') %></td>
-  	<td><%= @project.name) %></td>
+  	<td><%= project.name %></td>
   	<td><%= prt(r, :key_biz_form) %></td> 
-    <td><%= r.goal[0..40] %></td> 
+    <td><%= r.goal_to_achieve[0..40] %></td> 
     <td><%= prt(r, 'submitted_by.name') if r.submitted_by_id.present? %></td>
     <td><%= prt(r, 'last_updated_by.name') if r.last_updated_by_id.present? %></td>
-    <td><%= link_to t('Role Definitions'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_role', :subaction => 'customer_defined_role'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_role', 'project_misc_definitionx/misc_definitions' )  %></td>
-    <td><%= link_to t('Biz Steps'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_biz_step', :subaction => 'customer_defined_biz_step'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_biz_step', 'project_misc_definitionx/misc_definitions' )  %></td>
+    <td><%= link_to t('User Roles'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(user_roles_path(:project_info_id => r.id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/user_roles' )  %></td>
+    <td><%= link_to t('User Access Rights'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(role_access_rights_path(:project_info_id => r.id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/role_access_rights' )  %></td>
+    <td><%= link_to t('Biz Workflows'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(workflows_path(:project_info_id => r.id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/workflows' )  %></td>
     <td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_project_info_path(r)}" , :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r )  %></td>
     
   </tr>
@@ -44,9 +47,9 @@
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	<%= link_to t('New Module Info'), SUBURI + "/authentify/view_handler?index=1&url=#{new_module_info_path()}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+    	<%= link_to t('New Project Info'), SUBURI + "/authentify/view_handler?index=1&url=#{new_project_info_path(project_id: @project.id, customer_id: @customer.id)}", :class => BUTTONS_CLS['action'] if @project && @customer && has_action_right?('create', params[:controller]) %>
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	<%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_module_infos_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
+    	<%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_project_infos_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
     </th>
   </tr>
 </table>

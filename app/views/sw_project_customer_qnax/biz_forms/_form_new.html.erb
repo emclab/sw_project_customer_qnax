@@ -1,0 +1,17 @@
+<% if @view_in_config && @erb_code %>
+    <%= render inline: @erb_code %>
+<% else %>
+  <%= simple_form_for @biz_form do |f| %>
+  
+    <%= f.input :project_info_id, :as => :hidden, :input_html => {:value => @project_info.id} %>
+    <%= f.input :name, :label => t('Role') %>
+    <%= f.input :description, :label => t('Description'), :input_html => {:rows => 2} %>
+    <%= f.input :key_form, :label => t('Key Form'), :as => :boolean %>
+    
+    <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        
+    <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>
+  <% end %>
+
+<% end %>
+

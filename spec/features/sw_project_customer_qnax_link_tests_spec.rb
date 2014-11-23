@@ -30,35 +30,80 @@ describe "LinkTests" do
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       
+      #project info
       ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "SwProjectCustomerQnax::ProjectInfo.scoped.order('id')")
       ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
-           :sql_code => "record.last_updated_by_id == session[:user_id]")
-      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "record.last_updated_by_id == session[:user_id]")
-      ua1 = FactoryGirl.create(:user_access, :action => 'project_member', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
-      user_access = FactoryGirl.create(:user_access, :action => 'index_for_customer', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "SwProjectCustomerQnax::ProjectInfo.scoped.order('id')")  
-        
+      #biz_form
+      ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_biz_forms', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "SwProjectCustomerQnax::BizForm.scoped.order('id')")
+      ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_biz_forms', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_biz_forms', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_biz_forms', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      #role access right
+      ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_role_access_rights', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "SwProjectCustomerQnax::RoleAccessRight.scoped.order('id')")
+      ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_role_access_rights', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_role_access_rights', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_role_access_rights', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      #user role
+      ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_user_roles', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "SwProjectCustomerQnax::UserRole.scoped.order('id')")
+      ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_user_roles', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_user_roles', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_user_roles', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      #workflow
+      ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "SwProjectCustomerQnax::Workflow.scoped.order('id')")
+      ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
+           :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
       
-      @proj = FactoryGirl.create(:sw_project_customer_qnax_project_info)
+      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
+      @projj = FactoryGirl.create(:info_service_projectx_project)
+      @projj1 = FactoryGirl.create(:info_service_projectx_project, :name => 'a new name')
       @cust = FactoryGirl.create(:kustomerx_customer)
-      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :customer_id => @cust.id)
       
       visit '/'
       #save_and_open_page
       fill_in "login", :with => @u.login
-      fill_in "password", :with => 'password'
+      fill_in "password", :with => @u.password
       click_button 'Login'
       
     end
     it "works! (now write some real specs)" do
-      qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, :customer_id => @cust.id)
+      qp = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @projj.id)
+      qb = FactoryGirl.create(:sw_project_customer_qnax_biz_form, :last_updated_by_id => @u.id, project_info_id: qp.id)
+      qw = FactoryGirl.create(:sw_project_customer_qnax_workflow, :last_updated_by_id => @u.id, project_info_id: qp.id, name: 'a new act')
+      qu = FactoryGirl.create(:sw_project_customer_qnax_user_role, :last_updated_by_id => @u.id, project_info_id: qp.id)
+      qr = FactoryGirl.create(:sw_project_customer_qnax_role_access_right, :last_updated_by_id => @u.id, project_info_id: qp.id, action: 'a new act')
       visit project_infos_path()      
       click_link 'Edit'
       save_and_open_page

@@ -6,6 +6,6 @@ FactoryGirl.define do
     name "MyString"
     brief_note "MyText"
     last_updated_by_id 1
-    belong_to_department "MyString"
+    for_department "MyString"
   end
 end

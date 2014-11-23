@@ -5,7 +5,7 @@ class CreateSwProjectCustomerQnaxWorkflowSteps < ActiveRecord::Migration
       t.integer :user_role_id
       t.string :action
       t.text :brief_note
-      t.integer :index
+      t.integer :ranking_index  #index is a ruby keywork
 
       t.timestamps
     end
@@ -13,5 +13,6 @@ class CreateSwProjectCustomerQnaxWorkflowSteps < ActiveRecord::Migration
     add_index :sw_project_customer_qnax_workflow_steps, :workflow_id
     add_index :sw_project_customer_qnax_workflow_steps, :user_role_id
     add_index :sw_project_customer_qnax_workflow_steps, :action
+    add_index :sw_project_customer_qnax_workflow_steps, :ranking_index
   end
 end

@@ -4,20 +4,25 @@
 <% else %>
 <%= simple_form_for @project_info do |f| %>
   <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
-  <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
+  <%= f.input :project_id, :label => t('Project Name'), :collection => @sw_projects %>
   <%= f.input :key_biz_form, :label => t('Key Biz Form') %>
-  <%= f.input :goal, :label => t('Goal'), :input_html => { :rows => 3} %>
+  <%= f.input :about_department, :label => t('Departments'), :input_html => { :rows => 2}, :placeholder => 'List all departments' %>
+  <%= f.input :goal_to_achieve, :label => t('Goal'), :input_html => { :rows => 3} %>
   <%= f.input :main_biz, :label => t('Main Biz'), :input_html => { :rows => 3} %>
   <%= f.input :number_of_user, :label => t('Number of User') %>
-  <%= f.input :number_of_desktop, :label => t('Number of Desktop') %>
-  <%= f.input :number_of_laptop, :label => t('Number of laptop') %>
-  <%= f.input :number_of_tablet, :label => t('Number of tablet') %>
-  <%= f.input :use_smartphone, :label => t('Use Smartphone'), :as => :boolean %>
-  <%= f.input :has_broadband, :label => t('Broadband Connection'), :as => :boolean %>
-  <%= f.input :current_it_status, :label => t('IT Status'), :input_html => { :rows => 3} %>
-  <%= f.input :urgent_to_solve, :label => t('Urgent To Solve'), :input_html => { :rows => 2} %>
+  <%= f.input :broswer_in_use, :label => t('Broswer in Use')%>
+  <%= f.input :im_in_use, :label => t('IM in Use')%>
+  <%= f.input :os_in_use, :label => t('OS in Use')%>
+  <%= f.input :about_broadband, :label => t('About Broadband'), :input_html => { :rows => 2} %>
+  <%= f.input :about_hardware, :label => t('About Hardware'), :input_html => { :rows => 2} %>
+  <%= f.input :about_software, :label => t('About Software'), :input_html => { :rows => 2} %>
+  <%= f.input :about_network, :label => t('About Network'), :input_html => { :rows => 2} %>
+  <%= f.input :about_data_center, :label => t('About Data Center'), :input_html => { :rows => 2}, :placeholder => 'Tell us about the data center' %>
+  <%= f.input :issue_to_solve, :label => t('Issue To Solve'), :input_html => { :rows => 2} %>
+  <%= f.input :about_office_location, :label => t('Office Location'), :input_html => { :rows => 2}, :placeholder => 'List all locations' %>
      
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>
     
 <% end %>

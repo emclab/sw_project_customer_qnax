@@ -16,6 +16,7 @@ module SwProjectCustomerQnax
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       
       @proj = FactoryGirl.create(:info_service_projectx_project)
+      @proj1 = FactoryGirl.create(:info_service_projectx_project, :name => 'a new name')
       @cust = FactoryGirl.create(:kustomerx_customer)
       
     end
@@ -23,26 +24,37 @@ module SwProjectCustomerQnax
     render_views
     
     describe "GET 'index'" do
-      it "returns all info for the customer" do
+      it "returns all info" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "SwProjectCustomerQnax::ProjectInfo.scoped.order('id')")  
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id)
-        qs1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id,  :name => 'newnew',)
+        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj1.id)
+        qs1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj.id)
         get 'index' , {:use_route => :sw_project_customer_qnax}
         assigns(:project_infos).should =~ [qs, qs1]       
       end
       
-      it "should return project for the category_id" do
+      it "should return project for the project" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "SwProjectCustomerQnax::ProjectInfo.scoped.order('id')")        
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, :category_id => @cate.id)
-        qs1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, :category_id => @cate.id + 1, :name => 'newnew')
-        get 'index' , {:use_route =>  :sw_module_infox, :category_id => @cate.id }
+        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj.id)
+        qs1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj1.id)
+        get 'index' , {:use_route => :sw_project_customer_qnax, project_id: @proj.id }
         assigns(:project_infos).should eq([qs])
+      end
+      
+      it "should return for the customer" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_project_infos', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "SwProjectCustomerQnax::ProjectInfo.scoped.order('id')")        
+        session[:user_id] = @u.id
+        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        qs1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj.id, customer_id: @cust.id)
+        qs11 = FactoryGirl.create(:sw_project_customer_qnax_project_info, :last_updated_by_id => @u.id, project_id: @proj1.id, customer_id: @cust.id)
+        get 'index' , {:use_route => :sw_project_customer_qnax, project_id: @proj.id }
+        assigns(:project_infos).should eq([qs1])
       end
       
     end
@@ -54,7 +66,7 @@ module SwProjectCustomerQnax
         :sql_code => "")        
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        get 'new' , {:use_route => :sw_project_customer_qnax}
+        get 'new' , {:use_route => :sw_project_customer_qnax, project_id: @proj.id, customer_id: @cust.id}
         response.should be_success
       end
            
@@ -66,7 +78,7 @@ module SwProjectCustomerQnax
         :sql_code => "")        
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_project_info)
+        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_project_info, project_id: @proj.id, customer_id: @cust.id)
         get 'create' , {:use_route => :sw_project_customer_qnax,  :project_info => qs}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       end
@@ -76,7 +88,7 @@ module SwProjectCustomerQnax
         :sql_code => "")        
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_project_info, :project_id => nil)
+        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_project_info, :project_id => 0, customer_id: @cust.id)
         get 'create' , {:use_route => :sw_project_customer_qnax,  :project_info => qs}
         response.should render_template("new")
       end
@@ -103,8 +115,8 @@ module SwProjectCustomerQnax
         :sql_code => "")        
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, :data_resources => [resource])
-        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :project_info => {:goal => 'newnew'}}
+        qs = FactoryGirl.create(:sw_project_customer_qnax_project_info, project_id: @proj.id, customer_id: @cust.id)
+        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :project_info => {:goal_to_achieve => 'newnew'}}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       end
       
@@ -114,7 +126,7 @@ module SwProjectCustomerQnax
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_project_info)
-        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :project_info => {:customer_id => nil}}
+        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :project_info => {:project_id => nil}}
         response.should render_template("edit")
       end
     end

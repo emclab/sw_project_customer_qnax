@@ -6,8 +6,8 @@
 <h4><%= @title %></h4>
 
 <p>
-    <b><%= t('Submit Date') %></b>
-    <%= @project_info.submit_date.strftime('%Y/%m/%/d') if @project_info.submit_date.present? %>
+    <b><%= t('Create Date') %></b>
+    <%= @project_info.created_at.strftime('%Y/%m/%/d') %>
 </p>
 <p>
   <b><%= t('Project Name') %></b>
@@ -18,20 +18,24 @@
   <%= @customer.name %>
 </p>
 <p>
-  <b><%= t('Broadband') %></b>
-  <%= @project_info.broadband ? t('Yes') : t('No') %>
+  <b><%= t('About Broadband') %></b>
+  <%= @project_info.about_broadband %>
 </p>
 <p>
-  <b><%= t('Use Smartphone') %></b>
-  <%= @project_info.use_smartphone ? t('Yes') : t('No') %>
+  <b><%= t('About Department') %></b>
+  <%= @project_info.about_department %>
 </p>
 <p>
-  <b><%= t('Goal') %></b>
-  <%= @project_info.goal %>
+  <b><%= t('Project Goal') %></b>
+  <%= @project_info.goal_to_achieve %>
 </p>
 <p>
-  <b<%=t('Urgent to Solve')%></b>
-  <%= @project_info.urgent_to_solve %>
+  <b<%=t('Issue to Solve')%></b>
+  <%= @project_info.issue_to_solve %>
+</p>
+<p>
+  <b><%= t('Key Biz form') %></b>
+  <%= @project_info.key_biz_form %>
 </p>
 <p>
   <b><%= t('Main Biz') %></b>
@@ -42,28 +46,44 @@
   <%= @project_info.number_of_user %>
 </p>
 <p>
-  <b><%= t('# of Desktop') %></b>
-  <%= @project_info.number_of_desktop %>
+  <b><%= t('IM in Use') %></b>
+  <%= @project_info.im_in_use %>
 </p>
 <p>
-  <b><%= t('# of Laptop') %></b>
-  <%= @project_info.number_of_laptop %>
+  <b><%= t('Broswer in Use') %></b>
+  <%= @project_info.broswer_in_use %>
 </p>
 <p>
-  <b><%= t('# of Tablet') %></b>
-  <%= @project_info.number_of_tablet %>
+  <b><%= t('OS in Use') %></b>
+  <%= @project_info.os_in_use %>
 </p>
 <p>
-  <b><%= t('Key Biz form') %></b>
-  <%= @project_info.key_biz_form %>
+  <b><%= t('About Hardware') %></b>
+  <%= @project_info.about_hardware %>
+</p>
+<p>
+  <b><%= t('About Software') %></b>
+  <%= @project_info.about_software %>
+</p>
+<p>
+  <b><%= t('About Network') %></b>
+  <%= @project_info.about_network %>
+</p>
+<p>
+  <b><%= t('About Data Center') %></b>
+  <%= @project_info.about_data_center %>
 </p>
 <p>
   <b><%= t('Submitted By') %></b>
-  <%= @project_info.submitted_by.name %>
+  <%= @project_info.submitted_by.name if @project_info.submitted_by_id.present? %>
 </p>
 <p>
   <b><%= t('Last Updated By') %></b>
-  <%= @project_info.last_updated_by.name %>
+  <%= @project_info.last_updated_by.name if @project_info.last_updated_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Locked') %></b>
+  <%= @project_info.locked ? t('Yes') : t('No') %>
 </p>
 <p>
   <b><%= t('LOG：') %></b>
@@ -77,8 +97,8 @@
     <th>
     	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @project_info.id, :resource_name => params[:controller], :subaction => 'project_info',
-    	     :format => :js), :remote => true, :id => 'new_log_link' , :class => BUTTONS_CLS['action'] if has_action_right?('create_project_info', 'commonx/logs') %>
+    	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @project_info.id, :resource_name => params[:controller], :subaction => 'project_customer_info',
+    	     :format => :js), :remote => true, :id => 'new_log_link' , :class => BUTTONS_CLS['action'] if has_action_right?('create_project_customer_info', 'commonx/logs') %>
     </th>
   </tr>
 </table>
