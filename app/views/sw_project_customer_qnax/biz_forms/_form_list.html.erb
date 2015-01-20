@@ -15,7 +15,7 @@
 		<% models.each do |r| %>
 		  <tr>
             <% if has_action_right?('show', params[:controller], r) %>
-                <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{user_role_path(r)}"  %></td>
+                <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{biz_form_path(r)}"  %></td>
             <% else %>
                 <td><%= r.id %></td>
             <% end %>

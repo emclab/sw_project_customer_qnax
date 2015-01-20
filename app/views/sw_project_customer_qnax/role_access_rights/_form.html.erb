@@ -2,6 +2,7 @@
     <%= render inline: @erb_code %>
 <% else %>
   <%= simple_form_for @role_access_right do |f| %>
+    <%= f.input :user_role_id, :label => t('User Role'), :collection => @user_roles, :include_blank => true %>
     <%= f.input :action, :label => t('Action') %>
     <%= f.input :biz_form_id, :label => t('Biz Form'), :collection => @biz_forms %>
     <%= f.input :processed, :label => t('Processed'), :as => :boolean %>

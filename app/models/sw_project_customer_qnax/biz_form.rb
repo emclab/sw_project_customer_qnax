@@ -5,6 +5,9 @@ module SwProjectCustomerQnax
                     :as => :role_new
     attr_accessible :description, :key_form, :name,
                     :as => :role_update
+    attr_accessor :name_s, :description_s, :key_form_s, :project_info_id_s
+    attr_accessible :name_s, :description_s, :key_form_s, :project_info_id_s,
+                    :as => :role_search_stats
     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :project_info, :class_name => 'SwProjectCustomerQnax::ProjectInfo'

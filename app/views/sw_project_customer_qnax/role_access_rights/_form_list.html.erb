@@ -16,8 +16,8 @@
 		</tr>
 		<% models.each do |r| %>
 		  <tr>
-            <% if has_action_right?('show', 'sw_project_customer_qnax/user_roles', r) %>
-                <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{user_role_path(r)}"  %></td>
+            <% if has_action_right?('show', params[:controller], r) %>
+                <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{role_access_right_path(r)}"  %></td>
             <% else %>
                 <td><%= r.id %></td>
             <% end %>
@@ -37,7 +37,7 @@
 	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <%= link_to t('New Access Right'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape new_role_access_right_path(project_info_id: @project_info.id, :user_role_id => @user_role, parent_resource: 'sw_project_customer_qnax/project_infos', parent_record_id: @project_info.id)}", :class => BUTTONS_CLS['action'] if @user_role && @project_info && has_action_right?('create', params[:controller]) %>
+            <%= link_to t('New Access Right'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape new_role_access_right_path(project_info_id: @project_info.id, parent_resource: 'sw_project_customer_qnax/project_infos', parent_record_id: @project_info.id)}", :class => BUTTONS_CLS['action'] if @project_info && has_action_right?('create', params[:controller]) %>
 	  
 	    </th>
 	  </tr>

@@ -5,7 +5,7 @@ module SwProjectCustomerQnax
     before_filter :load_record
     
     def index
-      @title = t('User Roles')
+      @title = t('Biz Forms')
       @biz_forms = params[:sw_project_customer_qnax_biz_forms][:model_ar_r]
       @biz_forms = @biz_forms.where(project_info_id: @project_info.id) if @project_info
       @biz_forms = @biz_forms.page(params[:page]).per_page(@max_pagination)
@@ -13,7 +13,7 @@ module SwProjectCustomerQnax
     end
   
     def new
-      @title = t('New User Role')
+      @title = t('New Biz Form')
       @biz_form = SwProjectCustomerQnax::BizForm.new()
       @erb_code = find_config_const('biz_form_new_view', 'sw_project_customer_qnax')
     end
@@ -32,7 +32,7 @@ module SwProjectCustomerQnax
     end
   
     def edit
-      @title = t('Update User Role')
+      @title = t('Update Biz Form')
       @biz_form = SwProjectCustomerQnax::BizForm.find_by_id(params[:id])
       @erb_code = find_config_const('biz_form_edit_view', 'sw_project_customer_qnax')
     end
@@ -50,7 +50,7 @@ module SwProjectCustomerQnax
     end
     
     def show
-      @title = t('User Role Info')
+      @title = t('Biz Form Info')
       @biz_form = SwProjectCustomerQnax::BizForm.find_by_id(params[:id])
       @erb_code = find_config_const('biz_form_show_view', 'sw_project_customer_qnax')
     end

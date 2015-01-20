@@ -4,7 +4,7 @@ module SwProjectCustomerQnax
     attr_accessible :action, :brief_note, :last_updated_by_id, :biz_form_id, :user_role_id, :processed, :project_info_id,
                     :user_role_name,
                     :as => :role_new
-    attr_accessible :action, :brief_note, :last_updated_by_id, :biz_form_id, :processed, 
+    attr_accessible :action, :brief_note, :last_updated_by_id, :biz_form_id, :processed, :user_role_id,
                     :user_role_name, :biz_form_name,
                     :as => :role_update
     
@@ -20,7 +20,7 @@ module SwProjectCustomerQnax
     validates :user_role_id, :biz_form_id, :presence => true,
                              :numericality => {:only_integer => true, :greater_than => 0}
     validates :action, :presence => true 
-    validates :action, :uniqueness => {:scope => [:biz_form_id, :user_role_id], :case_sensitive => false, :message => 'Duplicate Action!'}   
+    validates :action, :uniqueness => {:scope => [:biz_form_id, :user_role_id], :case_sensitive => false, :message => I18n.t('Duplicate Action!')}   
     validate :dynamic_validate 
     
     def dynamic_validate
