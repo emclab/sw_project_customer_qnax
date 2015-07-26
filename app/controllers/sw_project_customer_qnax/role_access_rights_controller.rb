@@ -2,7 +2,7 @@ require_dependency "sw_project_customer_qnax/application_controller"
 
 module SwProjectCustomerQnax
   class RoleAccessRightsController < ApplicationController
-    before_filter :load_record
+    before_action :load_record
     
     def index
       @title = t('Role Access Rights')
@@ -21,10 +21,10 @@ module SwProjectCustomerQnax
     end
   
     def create
-      @role_access_right = SwProjectCustomerQnax::RoleAccessRight.new(params[:role_access_right], :as => :role_new)
+      @role_access_right = SwProjectCustomerQnax::RoleAccessRight.new(new_params)
       @role_access_right.last_updated_by_id = session[:user_id]
       if @role_access_right.save
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
         @project_info = SwProjectCustomerQnax::ProjectInfo.find_by_id(params[:role_access_right][:project_info_id]) if params[:role_access_right][:project_info_id].present?
         @user_roles = SwProjectCustomerQnax::UserRole.where(project_info_id: @project_info.id)
@@ -46,8 +46,8 @@ module SwProjectCustomerQnax
     def update
       @role_access_right = SwProjectCustomerQnax::RoleAccessRight.find_by_id(params[:id])
       @role_access_right.last_updated_by_id = session[:user_id]
-      if @role_access_right.update_attributes(params[:role_access_right], :as => :role_update)
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+      if @role_access_right.update_attributes(edit_params)
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
         @project_info = SwProjectCustomerQnax::ProjectInfo.find_by_id(@role_access_right.project_info_id)
         @user_roles = SwProjectCustomerQnax::UserRole.where(project_info_id: @project_info.id)
@@ -66,7 +66,7 @@ module SwProjectCustomerQnax
     
     def destroy
       SwProjectCustomerQnax::RoleAccessRight.delete(params[:id].to_i)
-      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
+      redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Deleted!")
     end
     
     protected
@@ -74,5 +74,16 @@ module SwProjectCustomerQnax
       @project_info = SwProjectCustomerQnax::ProjectInfo.find_by_id(params[:project_info_id]) if params[:project_info_id].present?
       @project_info = SwProjectCustomerQnax::ProjectInfo.find_by_id(SwProjectCustomerQnax::RoleAccessRight.find_by_id(params[:id]).project_info_id) if params[:id].present?
     end
+    
+    private
+    
+    def new_params
+      params.require(:role_access_right).permit(:action, :brief_note, :last_updated_by_id, :biz_form_id, :user_role_id, :processed, :project_info_id)
+    end
+
+    def edit_params
+      params.require(:role_access_right).permit(:action, :brief_note, :last_updated_by_id, :biz_form_id, :processed, :user_role_id)
+    end
+
   end
 end

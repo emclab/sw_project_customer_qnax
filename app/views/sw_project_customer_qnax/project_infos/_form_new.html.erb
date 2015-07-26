@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title %></h4>
 <%= simple_form_for @project_info do |f| %>
   <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
   <%= f.input :project_id, :label => t('Project Name'), :collection => @sw_projects, :include_blank => true %>

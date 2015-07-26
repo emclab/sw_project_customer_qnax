@@ -1,6 +1,7 @@
 <% if @view_in_config && @erb_code %>
     <%= render inline: @erb_code %>
 <% else %>
+<h4><%=@title %></h4>
   <%= simple_form_for @role_access_right do |f| %>
     <%= f.input :user_role_id, :label => t('User Role'), :collection => @user_roles, :include_blank => true %>
     <%= f.input :action, :label => t('Action') %>

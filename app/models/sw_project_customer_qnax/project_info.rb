@@ -1,6 +1,7 @@
 module SwProjectCustomerQnax
   class ProjectInfo < ActiveRecord::Base
     attr_accessor :project_name, :last_updated_by_name, :submitted_by_name, :customer_name
+=begin
     attr_accessible :key_biz_form, :customer_id, :goal_to_achieve, :about_broadband, :last_updated_by_id, :main_biz,  
                     :number_of_user, :project_id, :submitted_by_id, :issue_to_solve, :im_in_use, :about_hardware, :about_software, :about_network,
                     :broswer_in_use, :about_office_location, :about_data_center, :os_in_use, :about_department, :locked,
@@ -16,7 +17,7 @@ module SwProjectCustomerQnax
     attr_accessible :customer_id_s, :start_date_s, :end_date_s, :project_id_s, :submitted_by_id_s, :key_biz_form_s, :im_in_use_s, :use_smartphone_s, :data_center_s,
                     :locked_s,
                     :as => :role_search_stats
-    
+=end    
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :submitted_by, :class_name => 'Authentify::User'
     belongs_to :customer, :class_name => SwProjectCustomerQnax.customer_class.to_s

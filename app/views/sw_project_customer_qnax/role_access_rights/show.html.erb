@@ -2,7 +2,7 @@
 <%= render inline: ERB.new(@erb_code).result(binding) %>
 
 <% else %>
-<div id="main_body">
+
 	<h4><%= @title %></h4>
 
 	<p>
@@ -26,8 +26,8 @@
 		<%= @role_access_right.last_updated_by.name if @role_access_right.last_updated_by_id.present? %>
 	</p>
 
-	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+	<%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
 
-</div>
+
 
 <% end %>

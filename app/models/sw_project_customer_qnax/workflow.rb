@@ -1,11 +1,12 @@
 module SwProjectCustomerQnax
   class Workflow < ActiveRecord::Base
     attr_accessor :last_updated_by_name
+=begin
     attr_accessible :brief_note, :last_updated_by_id, :project_info_id, :name, :biz_form_id, :workflow_steps_attributes, 
                     :as => :role_new
     attr_accessible :brief_note, :last_updated_by_id, :project_info_id, :name, :biz_form_id, :workflow_steps_attributes,
                     :as => :role_update
-    
+=end    
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :project_info, :class_name => 'SwProjectCustomerQnax::ProjectInfo'
     belongs_to :biz_form, :class_name => 'SwProjectCustomerQnax::BizForm'

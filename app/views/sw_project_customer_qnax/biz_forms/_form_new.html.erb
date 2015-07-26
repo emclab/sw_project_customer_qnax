@@ -1,6 +1,7 @@
 <% if @view_in_config && @erb_code %>
     <%= render inline: @erb_code %>
 <% else %>
+<h4><%=@title %></h4>
   <%= simple_form_for @biz_form do |f| %>
   
     <%= f.input :project_info_id, :as => :hidden, :input_html => {:value => @project_info.id} %>

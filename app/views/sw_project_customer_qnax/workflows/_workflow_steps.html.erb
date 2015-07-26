@@ -5,7 +5,7 @@
 <div class="fields">
 	
   <%= f.input :ranking_index, :label => t('Nth Step'), :as => :integer, :required => true, :placeholder => '1,2,3...' %>
-  <%= f.input :user_role_id, :label => t("User Role"), :collection => @user_roles, :include_blank => true %>
+  <%= f.input :user_role_id, :label => t("User Role"), :collection => @user_roles.map{|x| [x.name, x.id]}, :include_blank => true %>
   <%= f.input :action, :label => t('Action'), :required => true %>
   <%= f.input :brief_note, :label => t("Brief Note")%>
 

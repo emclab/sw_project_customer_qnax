@@ -1,10 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module SwProjectCustomerQnax
-  describe WorkflowsController do
+  RSpec.describe WorkflowsController, type: :controller do
+    routes {SwProjectCustomerQnax::Engine.routes}
   
     before(:each) do
-      controller.should_receive(:require_signin)
+      expect(controller).to receive(:require_signin)
     end
     before(:each) do
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
@@ -19,6 +20,7 @@ module SwProjectCustomerQnax
       @proj = FactoryGirl.create(:sw_project_customer_qnax_project_info)
       @proj1 = FactoryGirl.create(:sw_project_customer_qnax_project_info, project_id: @proj.project_id + 1)
       
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
     end
       
     render_views
@@ -26,24 +28,22 @@ module SwProjectCustomerQnax
     describe "GET 'index'" do
       it "returns all info" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "SwProjectCustomerQnax::Workflow.scoped.order('id')")  
+        :sql_code => "SwProjectCustomerQnax::Workflow.order('id')")  
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow, :last_updated_by_id => @u.id, project_info_id: @proj1.id, name: 'a new act')
         qs1 = FactoryGirl.create(:sw_project_customer_qnax_workflow, :last_updated_by_id => @u.id, project_info_id: @proj.id)
-        get 'index' , {:use_route => :sw_project_customer_qnax}
-        assigns(:workflows).should =~ [qs, qs1]       
+        get 'index' 
+        expect(assigns(:workflows)).to match_array([qs, qs1])       
       end
       
       it "should return for the project" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "SwProjectCustomerQnax::Workflow.scoped.order('id')")        
+        :sql_code => "SwProjectCustomerQnax::Workflow.order('id')")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow, :last_updated_by_id => @u.id, project_info_id: @proj.id)
         qs1 = FactoryGirl.create(:sw_project_customer_qnax_workflow, :last_updated_by_id => @u.id, project_info_id: @proj1.id, name: 'a new act')
-        get 'index' , {:use_route => :sw_project_customer_qnax, project_info_id: @proj.id }
-        assigns(:workflows).should eq([qs])
+        get 'index' , { project_info_id: @proj.id }
+        expect(assigns(:workflows)).to eq([qs])
       end
       
     end
@@ -54,9 +54,8 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        get 'new', {:use_route => :sw_project_customer_qnax, project_info_id: @proj.id}
-        response.should be_success
+        get 'new', { project_info_id: @proj.id}
+        expect(response).to be_success
       end
            
     end
@@ -66,24 +65,22 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        role = FactoryGirl.create(:sw_project_customer_qnax_user_role)
+        role = FactoryGirl.create(:sw_project_customer_qnax_user_role, project_info_id: @proj.id)
         qss = FactoryGirl.attributes_for(:sw_project_customer_qnax_workflow_step)
         qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_workflow, project_info_id: @proj.id, workflow_steps_attributes: [qss])
-        get 'create' , {:use_route => :sw_project_customer_qnax,  :workflow => qs}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        get 'create' , {  :workflow => qs}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render 'new' if data error" do
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        role = FactoryGirl.create(:sw_project_customer_qnax_user_role)
+        role = FactoryGirl.create(:sw_project_customer_qnax_user_role, project_info_id: @proj.id)
         qss = FactoryGirl.attributes_for(:sw_project_customer_qnax_workflow_step)
-        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_workflow, :name => nil, workflow_steps_attributes: [qss])
-        get 'create' , {:use_route => :sw_project_customer_qnax,  :workflow => qs}
-        response.should render_template("new")
+        qs = FactoryGirl.attributes_for(:sw_project_customer_qnax_workflow, project_info_id: @proj.id, :name => nil, workflow_steps_attributes: [qss])
+        get 'create' , {  :workflow => qs}
+        expect(response).to render_template("new")
       end
     end
   
@@ -93,10 +90,10 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        role = FactoryGirl.create(:sw_project_customer_qnax_user_role, project_info_id: @proj.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow, project_info_id: @proj.id)
-        get 'edit' , {:use_route => :sw_project_customer_qnax,  :id => qs.id}
-        response.should be_success
+        get 'edit' , {  :id => qs.id}
+        expect(response).to be_success
       end
       
     end
@@ -107,20 +104,19 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow, project_info_id: @proj.id)
-        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :workflow => {:name => 'newnew'}}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        get 'update' , {  :id => qs.id, :workflow => {:name => 'newnew'}}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render 'new' if data error" do
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        role = FactoryGirl.create(:sw_project_customer_qnax_user_role, project_info_id: @proj.id)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow)
-        get 'update' , {:use_route => :sw_project_customer_qnax,  :id => qs.id, :workflow => {:biz_form_id => nil}}
-        response.should render_template("edit")
+        get 'update' , {  :id => qs.id, :workflow => {:biz_form_id => nil}}
+        expect(response).to render_template("edit")
       end
     end
   
@@ -130,13 +126,12 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource => 'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         form = FactoryGirl.create(:sw_project_customer_qnax_biz_form)
         role = FactoryGirl.create(:sw_project_customer_qnax_user_role)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow_step, user_role_id: role.id)
         q = FactoryGirl.create(:sw_project_customer_qnax_workflow, :workflow_steps => [qs], biz_form_id: form.id)
-        get 'show' , {:use_route => :sw_project_customer_qnax,  :id => qs.id}
-        response.should be_success
+        get 'show' , {  :id => qs.id}
+        expect(response).to be_success
       end
     end
   
@@ -145,12 +140,11 @@ module SwProjectCustomerQnax
         user_access = FactoryGirl.create(:user_access, :action => 'destroy', :resource =>'sw_project_customer_qnax_workflows', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         role = FactoryGirl.create(:sw_project_customer_qnax_user_role)
         qs = FactoryGirl.create(:sw_project_customer_qnax_workflow_step)
         q = FactoryGirl.create(:sw_project_customer_qnax_workflow, :workflow_steps => [qs])
-        get 'destroy', {:use_route => :sw_project_customer_qnax, :id => q.id }
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
+        get 'destroy', { :id => q.id }
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Deleted!")
       end
     end
   

@@ -1,10 +1,11 @@
 module SwProjectCustomerQnax
   class WorkflowStep < ActiveRecord::Base
+=begin
     attr_accessible :action, :brief_note, :ranking_index, :user_role_id, :workflow_id,
                     :as => :role_new
     attr_accessible :action, :brief_note, :ranking_index, :user_role_id, :workflow_id,
                     :as => :role_new 
-                     
+=end                     
     belongs_to :user_role, :class_name => 'SwProjectCustomerQnax::UserRole'
     belongs_to :workflow, :class_name => 'SwProjectCustomerQnax::Workflow'
     
